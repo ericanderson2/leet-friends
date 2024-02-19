@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Test</title>
+  </head>
+  <body>
+
+  </body>
+  <script type="text/javascript">
+    async function get_user(username) {
+      let url = `https://leetcode.com/graphql/?query=query{
+        allQuestionsCount {
+            difficulty
+            count
+        }
+        matchedUser(username: "` + username + `") {
+            username
+            contributions {
+                points
+            }
+            profile {
+                realName
+                countryName
+                starRating
+                aboutMe
+                userAvatar
+                ranking
+            }
+            submitStats {
+                acSubmissionNum {
+                    difficulty
+                    count
+                    submissions
+                }
+                totalSubmissionNum {
+                    difficulty
+                    count
+                    submissions
+                }
+            }
+        }
+        recentSubmissionList(username: "` + username + `", limit: 1) {
+            timestamp
+        }
+    }`;
+      const response = await fetch(url);
+      var data = await response.json();
+      return data
+    }
+    get_user("lee215").then(res => {
+      console.log(res);
+    });
+  </script>
+</html>
