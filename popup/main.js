@@ -52,20 +52,32 @@ async function get_user(username, callback = data => received_user(data)) {
 
 function add_friend() {
   let user = document.getElementById("user-input").value;
-  get_user(document.getElementById("user-input").value, data => validate_new_friend(data));
+  if (user.length > 0) {
+    get_user(document.getElementById("user-input").value, data => validate_new_friend(data));
+  }
 }
 
 function validate_new_friend(data) {
   if (data["matchedUser"] != null) {
     document.getElementById("user-input").value = ""
-    create_friend_box(data);
+    if (document.getElementById(data["matchedUser"]["username"]) == null) {
+      create_friend_box(data);
+    } else {
+      flash_error("User already exists in friends list");
+    }
   } else {
-    let err = document.getElementById("err-message");
-    err.classList.remove("hidden");
-    setTimeout(() => {
-      err.classList.add("hidden");
-    }, "2500");
+    flash_error("Could not find user");
   }
+}
+
+function flash_error(message) {
+  let element = document.getElementById("err-message");
+  element.innerText = message;
+
+  element.classList.remove("hidden");
+  setTimeout(() => {
+    element.classList.add("hidden");
+  }, "2500");
 }
 
 function remove_friend(username) {
@@ -88,6 +100,9 @@ function sort_friends() {
 
 function create_friend_box(data) {
   let user = data["matchedUser"]["username"];
+  if (document.getElementById(user) != null) {
+    return
+  }
   let points = data["matchedUser"]["contributions"]["points"];
   let avatar = data["matchedUser"]["profile"]["userAvatar"];
   let ranking = data["matchedUser"]["profile"]["ranking"].toLocaleString();
