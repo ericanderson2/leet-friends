@@ -48,11 +48,6 @@ async function get_multiple(users) {
   return results
 }
 
-var header = document.getElementById("header");
-var h1 = document.createElement("h1");
-h1.innerHTML = "ferd";
-header.appendChild(h1);
-
 get_multiple(["lee215", "btl5", "ericanderson"]).then(result => {
   for (i in result) {
     create_friend_box(result[i]["value"]["data"]);
@@ -60,8 +55,8 @@ get_multiple(["lee215", "btl5", "ericanderson"]).then(result => {
 });
 
 function create_friend_box(data) {
-  var header = document.getElementById("header");
-  var h1 = document.createElement("h1");
-  h1.innerHTML = data["matchedUser"]["contributions"]["points"];
-  header.appendChild(h1);
+  //var header = document.getElementById("header");
+  //var h1 = document.createElement("h1");
+  //h1.innerHTML = data["matchedUser"]["contributions"]["points"];
+  //header.appendChild(h1);
 }
