@@ -4,40 +4,44 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="style.css"/>
+    <title>LeetFriends</title>
   </head>
 
 <body>
   <div id="popup-content">
-    <div id="header">
+    <div id="header" class="flex">
+      <img src="../images/lf_logo.png" alt="leet friends logo"/>
       <h1>LeetFriends</h1>
     </div>
     <div id="friend-list">
       <div class="friend-box">
         <div class="header-line flex">
-          <img src="https://assets.leetcode.com/users/lee215/avatar_1551541889.png" alt="avatar"/>
-          <div class="flex-fill">
+          <img src="https://assets.leetcode.com/users/lee215/avatar_1551541889.png" class="avatar" alt="avatar"/>
+          <div class="flex-fill" style="margin-top:5px;margin-bottom:5px;">
             <div class="flex user-row">
-              <h3><a href="https://leetcode.com/lee215">Lee <span>(lee215)</span></a></h3>
-              <p>Submitted 1200 Days Ago</p>
+              <h3><a href="https://leetcode.com/lee215">Lee <span>(lee2l5)</span></a></h3>
+              <p class="last-online">Submitted 1200 Days Ago</p>
               <div class="flex-fill">
                 <button style="float:right;" class="remove-button">x</button>
               </div>
-
             </div>
-
-            <p>Rank: 100,305 ⭐⭐⭐</p>
-            <p>🟩120 🟨415 🟥50   (600 AC)</p>
+            <div class="flex user-row">
+              <p>Rank: 100,305 ⭐⭐⭐</p>
+              <div class="flex-fill">
+                <p style="float:right;">🪙 4944</p>
+              </div>
+            </div>
+            <div class="flex user-row">
+              <p>⬛600 🟩120 🟨415 🟥50</p>
+              <div class="flex-fill">
+                <p style="float:right;">35% AC</p>
+              </div>
+            </div>
             <div>
               <!--<img src="../images/LeetCoin.png" alt="leetcoin" class="leet-coin"/>-->
-              <p>🪙 4944</p>
             </div>
-
           </div>
-
-
-
         </div>
-
       </div>
       <div class="friend-box">
         <div class="header-line">

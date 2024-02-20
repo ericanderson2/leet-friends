@@ -6,18 +6,12 @@
 }
 
 html, body {
-  width: 500px;
+  width: max-content;
+  min-width: 500px;
 }
 
 body {
   background-color: #f7f8fa;
-}
-
-input {
-  border: 1px solid black;
-  border-radius: 4px;
-  font-size: 18px;
-  padding-left: 6px;
 }
 
 button {
@@ -30,16 +24,10 @@ a {
   text-decoration: none;
 }
 
-img {
-  border-radius: 10px;
-  width: 70px;
-  height: 70px;
-  padding: 8px;
-}
-
 .user-row {
   align-items: center;
   padding-top: 5px;
+  padding-bottom: 3px;
 }
 
 .remove-button {
@@ -51,8 +39,6 @@ img {
   height: 20px;
   font-size: 12px;
   padding: 0px;
-  margin-right: 8px;
-
 }
 
 #header {
@@ -63,6 +49,13 @@ img {
 
 #header h1 {
   color: #0000008c;
+  padding-top: 5px;
+  margin-left: 5px;
+}
+
+#header img {
+  max-height: 45px;
+  width: auto;
 }
 
 .outline-red {
@@ -82,8 +75,24 @@ img {
 }
 
 #add-friend {
-  padding: 10px;
-  background-color: grey;
+  padding: 15px;
+  background-color: rgb(240, 240, 240);
+  border-top: 1px solid #00000014;
+}
+
+#add-friend input {
+  background-color: #000a200d;
+  color: #262626bf;
+  border-width: 0px;
+  padding: 6px;
+  padding-left: 10px;
+  border-radius: 6px;
+  font-size: 18px;
+}
+
+#add-friend input:focus {
+  background-color: #000a201a;
+  outline: none;
 }
 
 #friend-list {
@@ -93,8 +102,22 @@ img {
   padding-bottom: 10px;
 }
 
+.avatar {
+  border-radius: 10px;
+  padding: 8px;
+  max-height: 85px;
+  width: auto;
+}
+
+.last-online {
+  font-style: italic;
+  margin-left: 8px;
+  margin-right: 5px;
+}
+
 .friend-box {
   margin-bottom: 15px;
+  padding-right: 10px;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0px 2px 6px #0000000a,0px 4px 8px #00000005,0px 6px 12px #00000005;

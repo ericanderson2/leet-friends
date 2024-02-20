@@ -10,7 +10,7 @@
   },
 
   "permissions": [
-    "activeTab"
+    "https://leetcode.com/graphql"
   ],
 
   "browser_action": {
@@ -26,6 +26,10 @@
 
   "web_accessible_resources": [
     "images/*.png"
-  ]
+  ],
+
+  "background": {
+    "scripts": ["background.js"]
+  }
 
 }
