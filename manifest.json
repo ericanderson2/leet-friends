@@ -1,5 +1,4 @@
 {
-
   "description": "Adds a browser action icon to the toolbar. Click the button to show the LeetFriends panel. From this panel you can see and add LeetCode friends.",
   "manifest_version": 2,
   "name": "LeetFriends",
