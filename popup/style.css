@@ -14,12 +14,6 @@ body {
   background-color: #f7f8fa;
 }
 
-button {
-  border-radius: 4px;
-  font-size: 18px;
-  padding: 5px;
-}
-
 a {
   text-decoration: none;
 }
@@ -39,6 +33,27 @@ a {
   height: 20px;
   font-size: 12px;
   padding: 0px;
+  transition-duration: 0.1s;
+}
+
+.remove-button:hover {
+  background-color: rgb(239, 50, 50, 1);
+}
+
+#add-button {
+  border-radius: 4px;
+  font-size: 18px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: 10px;
+  background-color: #2db55d26;
+  border: 0px;
+  transition-duration: 0.1s;
+}
+
+#add-button:hover {
+  background-color: #2db55dbb;
 }
 
 #header {
@@ -100,6 +115,11 @@ a {
   padding-right: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+#err-message {
+  color: rgb(239, 50, 50);
+  margin-bottom: 16px;
 }
 
 .avatar {

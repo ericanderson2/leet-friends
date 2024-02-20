@@ -1,4 +1,17 @@
-async function get_user(username) {
+"use strict";
+
+document.getElementById("add-button").addEventListener("click", () => add_friend());
+
+let friends = ["lee215"];
+for (let i in friends) {
+  get_user(friends[i]);
+}
+
+let aliases = {
+  "lee215": "Lee"
+}
+
+async function get_user(username, callback = data => received_user(data)) {
   let url = `https://leetcode.com/graphql/?query=query{
   allQuestionsCount {
       difficulty
@@ -34,59 +47,45 @@ async function get_user(username) {
       timestamp
   }
 }`;
-  browser.runtime.sendMessage(url, data => received_user(data));
+  browser.runtime.sendMessage(url, callback);
+}
+
+function add_friend() {
+  let user = document.getElementById("user-input").value;
+  get_user(document.getElementById("user-input").value, data => validate_new_friend(data));
+}
+
+function validate_new_friend(data) {
+  if (data["matchedUser"] != null) {
+    document.getElementById("user-input").value = ""
+    create_friend_box(data);
+  } else {
+    let err = document.getElementById("err-message");
+    err.classList.remove("hidden");
+    setTimeout(() => {
+      err.classList.add("hidden");
+    }, "2500");
+  }
+}
+
+function remove_friend(username) {
+  document.getElementById(username).remove();
 }
 
 function received_user(data) {
-  create_friend_box(data);
+  if (data["matchedUser"] != null) {
+    create_friend_box(data);
+  }
 }
 
-friends = ["lee215", "btl5", "ericanderson", "silogramijneb", "datboi9292827", "nishansam"];
-for (i in friends) {
-  get_user(friends[i]);
+function sort_friends() {
+  const friends = document.getElementById("friend-list");
+
+  [...friends.children]
+  .sort((a, b) => a.getAttribute("user") > b.getAttribute("user") ? 1 : -1)
+  .forEach(node => friends.appendChild(node));
 }
 
-let url = `https://leetcode.com/graphql/?query=query{
-allQuestionsCount {
-    difficulty
-    count
-}
-matchedUser(username: "ericanderson") {
-    username
-    contributions {
-        points
-    }
-    profile {
-        realName
-        countryName
-        starRating
-        aboutMe
-        userAvatar
-        ranking
-    }
-    submitStats {
-        acSubmissionNum {
-            difficulty
-            count
-            submissions
-        }
-        totalSubmissionNum {
-            difficulty
-            count
-            submissions
-        }
-    }
-}
-recentSubmissionList(username: "btl5", limit: 1) {
-    timestamp
-}
-}`;
-fetch(url).then(response => response.json()).then(res => console.log(res["data"]));
-
-let aliases = {
-  "lee215": "Lee",
-  "btl5": "Brian"
-}
 function create_friend_box(data) {
   let user = data["matchedUser"]["username"];
   let points = data["matchedUser"]["contributions"]["points"];
@@ -138,9 +137,8 @@ function create_friend_box(data) {
     document.getElementById("friend-list").appendChild(div);
 
     div.id = user;
+    div.setAttribute("user", user.toLowerCase());
     document.getElementById("rm-" + user).addEventListener("click", () => remove_friend(user));
-}
 
-function remove_friend(username) {
-  document.getElementById(username).remove();
+    sort_friends();
 }
