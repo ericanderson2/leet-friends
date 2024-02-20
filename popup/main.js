@@ -1,22 +1,29 @@
 "use strict";
 
 document.getElementById("add-button").addEventListener("click", () => add_friend());
+document.getElementById("user-input").addEventListener("input", filterField);
 
-let friends = ["lee215"];
-for (let i in friends) {
-  get_user(friends[i]);
-}
+const friends_list = document.getElementById("friend-list");
+const no_friends = document.getElementById("no-friends");
 
-let aliases = {
-  "lee215": "Lee"
-}
+let friends = [];
+let aliases = {};
+browser.storage.sync.get("aliases").then(res => {
+  aliases = res.aliases || {};
+}).then(
+browser.storage.sync.get("friends").then(res => {
+    friends = res.friends || [];
+    for (let i in friends) {
+      get_user(friends[i]);
+    }
+
+    if (friends.length == 0) {
+      no_friends.classList.remove("hidden");
+    }
+}));
 
 async function get_user(username, callback = data => received_user(data)) {
   let url = `https://leetcode.com/graphql/?query=query{
-  allQuestionsCount {
-      difficulty
-      count
-  }
   matchedUser(username: "${username}") {
       username
       contributions {
@@ -24,9 +31,7 @@ async function get_user(username, callback = data => received_user(data)) {
       }
       profile {
           realName
-          countryName
           starRating
-          aboutMe
           userAvatar
           ranking
       }
@@ -50,6 +55,18 @@ async function get_user(username, callback = data => received_user(data)) {
   browser.runtime.sendMessage(url, callback);
 }
 
+function received_user(data) {
+  if (data["matchedUser"] != null) {
+    create_friend_box(data);
+  }
+}
+
+function filterField(e) {
+  let t = e.target;
+  let badValues = /[^\w\d]/gi;
+  t.value = t.value.replace(badValues, '');
+}
+
 function add_friend() {
   let user = document.getElementById("user-input").value;
   if (user.length > 0) {
@@ -59,8 +76,16 @@ function add_friend() {
 
 function validate_new_friend(data) {
   if (data["matchedUser"] != null) {
-    document.getElementById("user-input").value = ""
-    if (document.getElementById(data["matchedUser"]["username"]) == null) {
+    document.getElementById("user-input").value = "";
+    let user = data["matchedUser"]["username"];
+    if (document.getElementById(user) == null) {
+      friends.push(user);
+      browser.storage.sync.set({
+        "friends": friends
+      });
+      if (friends.length == 1) {
+          no_friends.classList.add("hidden");
+      }
       create_friend_box(data);
     } else {
       flash_error("User already exists in friends list");
@@ -81,21 +106,20 @@ function flash_error(message) {
 }
 
 function remove_friend(username) {
+  friends = friends.filter(x => x !== username);
+  browser.storage.sync.set({
+    "friends": friends
+  });
   document.getElementById(username).remove();
-}
-
-function received_user(data) {
-  if (data["matchedUser"] != null) {
-    create_friend_box(data);
+  if (friends.length == 0) {
+      no_friends.classList.remove("hidden");
   }
 }
 
 function sort_friends() {
-  const friends = document.getElementById("friend-list");
-
-  [...friends.children]
+  [...friends_list.children]
   .sort((a, b) => a.getAttribute("user") > b.getAttribute("user") ? 1 : -1)
-  .forEach(node => friends.appendChild(node));
+  .forEach(node => friends_list.appendChild(node));
 }
 
 function create_friend_box(data) {
@@ -152,7 +176,7 @@ function create_friend_box(data) {
     document.getElementById("friend-list").appendChild(div);
 
     div.id = user;
-    div.setAttribute("user", user.toLowerCase());
+    div.setAttribute("user", user.toLowerCase()); // used for sorting friends list alphabetically
     document.getElementById("rm-" + user).addEventListener("click", () => remove_friend(user));
 
     sort_friends();

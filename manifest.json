@@ -8,8 +8,15 @@
     "48": "icons/leet-friends-48.png"
   },
 
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "leetfriends@leetfriendsgaming.com"
+    }
+  },
+
   "permissions": [
-    "https://leetcode.com/graphql"
+    "https://leetcode.com/graphql",
+    "storage"
   ],
 
   "browser_action": {

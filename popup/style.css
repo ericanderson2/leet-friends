@@ -73,6 +73,10 @@ a {
   width: auto;
 }
 
+#no-friends {
+  margin: 20px 5px 20px 5px;
+}
+
 .outline-red {
   border: 1px solid red;
 }
