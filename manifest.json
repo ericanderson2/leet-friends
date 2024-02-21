@@ -3,7 +3,7 @@
   "manifest_version": 3,
   "name": "LeetFriends",
   "version": "1.0",
-  "homepage_url": "https://github.com/mdn/webextensions-examples/tree/master/beastify",
+  "homepage_url": "https://github.com/ericanderson2/leet-friends",
   "icons": {
     "48": "icons/leet-friends-48.png"
   },
