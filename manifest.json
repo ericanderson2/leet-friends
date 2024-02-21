@@ -1,6 +1,6 @@
 {
   "description": "Adds a browser action icon to the toolbar. Click the button to show the LeetFriends panel. From this panel you can see and add LeetCode friends.",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "LeetFriends",
   "version": "1.0",
   "homepage_url": "https://github.com/mdn/webextensions-examples/tree/master/beastify",
@@ -15,11 +15,14 @@
   },
 
   "permissions": [
-    "https://leetcode.com/graphql",
     "storage"
   ],
 
-  "browser_action": {
+  "host_permissions": [
+    "https://leetcode.com/graphql"
+  ],
+
+  "action": {
     "default_icon": "icons/leet-friends-32.png",
     "theme_icons": [{
         "light": "icons/leet-friends-32-light.png",
@@ -30,9 +33,10 @@
     "default_popup": "popup/leet_friends.html"
   },
 
-  "web_accessible_resources": [
-    "images/*.png"
-  ],
+  "web_accessible_resources": [{
+    "resources": ["images/*.png"],
+    "matches": []
+  }],
 
   "background": {
     "scripts": ["scripts/background.js"]
