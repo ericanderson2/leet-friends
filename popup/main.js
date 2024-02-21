@@ -3,24 +3,41 @@
 document.getElementById("add-button").addEventListener("click", () => add_friend());
 document.getElementById("user-input").addEventListener("input", filterField);
 
+document.getElementById("enable-perms").addEventListener("click", () => {
+  browser.permissions.request(required);
+  window.close();
+});
+
 const friends_list = document.getElementById("friend-list");
 const no_friends = document.getElementById("no-friends");
 
+let required = {
+  origins: ["https://leetcode.com/graphql"]
+};
+
 let friends = [];
 let aliases = {};
-browser.storage.sync.get("aliases").then(res => {
-  aliases = res.aliases || {};
-}).then(
-browser.storage.sync.get("friends").then(res => {
-    friends = res.friends || [];
-    for (let i in friends) {
-      get_user(friends[i]);
-    }
 
-    if (friends.length == 0) {
-      no_friends.classList.remove("hidden");
-    }
-}));
+browser.permissions.contains(required).then(has_perms => {
+  if (has_perms) {
+    browser.storage.sync.get("aliases").then(res => {
+      aliases = res.aliases || {};
+    }).then(
+    browser.storage.sync.get("friends").then(res => {
+        friends = res.friends || [];
+        for (let i in friends) {
+          get_user(friends[i]);
+        }
+
+        if (friends.length == 0) {
+          no_friends.classList.remove("hidden");
+        }
+    }));
+  } else {
+    document.getElementById("add-friend").classList.add("hidden");
+    document.getElementById("perms").classList.remove("hidden");
+  }
+});
 
 async function get_user(username, callback = data => received_user(data)) {
   let url = `https://leetcode.com/graphql/?query=query{

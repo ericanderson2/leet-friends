@@ -18,6 +18,28 @@ a {
   text-decoration: none;
 }
 
+button {
+  box-sizing: border-box;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+  color: #fff;
+  outline: none;
+  outline: 0;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
+  text-align: center;
+  transform: translateY(0);
+  transition: transform 150ms, box-shadow 150ms;
+  border: 1px solid #13aa52;
+  background-color: #13aa52;
+}
+
+button:hover {
+  box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
+  /*transform: translateY(-2px);*/
+}
+
 .user-row {
   align-items: center;
   padding-top: 5px;
@@ -26,7 +48,7 @@ a {
 
 .remove-button {
   size: 10px;
-  background-color: rgb(239, 71, 67, 0.3);
+  background-color: rgb(239, 71, 67, 0.5);
   border-width: 0;
   border-radius: 5px;
   width: 20px;
@@ -40,20 +62,37 @@ a {
   background-color: rgb(239, 50, 50, 1);
 }
 
+#perms {
+  padding: 18px;
+}
+
+#perms p {
+  margin-bottom: 15px;
+}
+
+#perms button {
+  padding: 10px 25px;
+  margin-top: 15px;
+}
+
+@media (min-width: 768px) {
+  .button-37 {
+    padding: 10px 30px;
+  }
+}
+
 #add-button {
-  border-radius: 4px;
   font-size: 18px;
   padding: 5px;
   padding-left: 10px;
   padding-right: 10px;
   margin-left: 10px;
-  background-color: #2db55d26;
-  border: 0px;
-  transition-duration: 0.1s;
+  background-color: rgb(20, 180, 53, 0.6);
+  border-width: 0;
 }
 
 #add-button:hover {
-  background-color: #2db55dbb;
+  background-color: #13aa52;
 }
 
 #header {
@@ -101,7 +140,7 @@ a {
 
 #add-friend input {
   background-color: #000a200d;
-  color: #262626bf;
+  color: #262626;
   border-width: 0px;
   padding: 6px;
   padding-left: 10px;
