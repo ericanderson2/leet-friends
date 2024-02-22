@@ -103,8 +103,9 @@ button:hover {
   padding-bottom: 3px;
 }
 
-.remove-button {
-  background-color: rgb(239, 71, 67, 0.5);
+.friend-button {
+  margin-left: 6px;
+  float: right;
   border-width: 0;
   border-radius: 5px;
   width: 20px;
@@ -114,8 +115,22 @@ button:hover {
   transition-duration: 0.1s;
 }
 
+.remove-button {
+  background-color: rgb(239, 71, 67, 0.5);
+}
+
 .remove-button:hover {
   background-color: rgb(239, 50, 50, 1);
+}
+
+.edit-button {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  color: #888;
+}
+
+.edit-button:hover {
+  background-color: #e6e6e6;
 }
 
 /* Loader */
