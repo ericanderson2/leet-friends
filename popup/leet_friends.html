@@ -18,7 +18,14 @@
       <div id="perms" class="hidden">
         <p>LeetFriends requires permission to call the LeetCode API.</p>
         <p>It does not read or store your login info or profile data.</p>
-        <button type="button" id="enable-perms">Enable permissions</button>
+        <div class="flex">
+          <button type="button" id="enable-perms">Enable permissions</button>
+          <div class="tiny-box">
+            <a class="tiny-button" href="https://github.com/ericanderson2/leet-friends">
+              <img class="tiny-img" src="../images/github-mark.png" alt="github logo" />
+            </a>
+          </div>
+        </div>
       </div>
       <div class="loader hidden" id="main-spinner"></div>
 
@@ -48,7 +55,7 @@
         </div>
       </div>-->
     </div>
-    <div id="footer">
+    <div id="footer" class="flex">
       <div id="add-friend">
         <p id="err-message" class="hidden">Could not find user</p>
         <input type="text" id="user-input" placeholder="username"></input>
@@ -57,6 +64,16 @@
       <div id="searching-friend" class="flex hidden">
         <div class="loader" id="mini-spinner"></div>
         <p class="flex-fill">Adding friend <span id="added-username">lee215</span></p>
+      </div>
+      <div class="flex flex-fill">
+        <div class="tiny-box">
+          <a class="tiny-button" href="https://github.com/ericanderson2/leet-friends/issues">
+            <img class="tiny-img" src="../images/bug.png" alt="bug" />
+          </a>
+          <a class="tiny-button" href="https://github.com/ericanderson2/leet-friends">
+            <img class="tiny-img" src="../images/github-mark.png" alt="github logo" />
+          </a>
+        </div>
       </div>
     </div>
 

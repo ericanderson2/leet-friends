@@ -58,6 +58,22 @@ button:hover {
   display: inline-block;
 }
 
+/* Tiny Images */
+
+.tiny-box {
+  margin-left: auto;
+  margin-top: auto;
+}
+
+.tiny-img {
+  max-width: 20px;
+  max-height: auto;
+}
+
+.tiny-button {
+  margin-left: 5px;
+}
+
 /* Friend Box */
 
 .friend-box {
@@ -134,6 +150,10 @@ button:hover {
 #perms button {
   padding: 10px 25px;
   margin-top: 15px;
+}
+
+#perms .tiny-img {
+  max-width: 30px;
 }
 
 /* Header */

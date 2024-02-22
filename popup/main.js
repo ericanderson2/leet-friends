@@ -40,7 +40,7 @@ browser.permissions.contains(required).then(has_perms => {
 
     }));
   } else {
-    document.getElementById("add-friend").classList.add("hidden");
+    document.getElementById("footer").classList.add("hidden");
     document.getElementById("perms").classList.remove("hidden");
   }
 });
