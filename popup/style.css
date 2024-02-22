@@ -39,6 +39,48 @@ button:hover {
   box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
 }
 
+/* Generic */
+
+.flex {
+  display: flex;
+}
+
+.flex-fill {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.inline {
+  display: inline-block;
+}
+
+/* Friend Box */
+
+.friend-box {
+  margin-bottom: 15px;
+  padding-right: 10px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px #0000000a,0px 4px 8px #00000005,0px 6px 12px #00000005;
+}
+
+.avatar {
+  border-radius: 10px;
+  padding: 8px;
+  max-height: 85px;
+  width: auto;
+}
+
+.last-online {
+  font-style: italic;
+  margin-left: 8px;
+  margin-right: 5px;
+}
+
 .user-row {
   align-items: center;
   padding-top: 5px;
@@ -60,142 +102,7 @@ button:hover {
   background-color: rgb(239, 50, 50, 1);
 }
 
-#perms {
-  padding: 18px;
-}
-
-#perms p {
-  margin-bottom: 15px;
-}
-
-#perms button {
-  padding: 10px 25px;
-  margin-top: 15px;
-}
-
-@media (min-width: 768px) {
-  .button-37 {
-    padding: 10px 30px;
-  }
-}
-
-#add-button {
-  font-size: 18px;
-  padding: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-left: 10px;
-  background-color: rgb(20, 180, 53, 0.6);
-  border-width: 0;
-}
-
-#add-button:hover {
-  background-color: #13aa52;
-}
-
-#header {
-  background-color: #fff;
-  padding: 10px;
-  border-bottom: 1px solid #00000014;
-}
-
-#header h1 {
-  color: #0000008c;
-  padding-top: 5px;
-  margin-left: 5px;
-}
-
-#header img {
-  max-height: 45px;
-  width: auto;
-}
-
-#no-friends {
-  margin: 20px 5px 20px 5px;
-}
-
-.outline-red {
-  border: 1px solid red;
-}
-
-.inline {
-  display: inline-block;
-}
-
-.leet-coin {
-  width: 20px;
-  height: 20px;
-  padding: 0px;
-  margin-left: 10px;
-  margin-right: 5px;
-}
-
-#footer {
-  padding: 15px;
-  background-color: rgb(240, 240, 240);
-  border-top: 1px solid #00000014;
-}
-
-#add-friend input {
-  background-color: #000a200d;
-  color: #262626;
-  border-width: 0px;
-  padding: 6px;
-  padding-left: 10px;
-  border-radius: 6px;
-  font-size: 18px;
-}
-
-#add-friend input:focus {
-  background-color: #000a201a;
-  outline: none;
-}
-
-#friend-list {
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 10px;
-  padding-bottom: 5px;
-}
-
-#err-message {
-  color: rgb(239, 50, 50);
-  margin-bottom: 16px;
-}
-
-.avatar {
-  border-radius: 10px;
-  padding: 8px;
-  max-height: 85px;
-  width: auto;
-}
-
-.last-online {
-  font-style: italic;
-  margin-left: 8px;
-  margin-right: 5px;
-}
-
-.friend-box {
-  margin-bottom: 15px;
-  padding-right: 10px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0px 2px 6px #0000000a,0px 4px 8px #00000005,0px 6px 12px #00000005;
-}
-
-.flex {
-  display: flex;
-}
-
-.flex-fill {
-  flex-grow: 1;
-  min-width: 0;
-}
-
-.hidden {
-  display: none;
-}
+/* Loader */
 
 .loader {
   border: 10px solid #f3f3f3; /* Light grey */
@@ -214,6 +121,86 @@ button:hover {
   100% { transform: rotate(360deg); }
 }
 
+/* Perms */
+
+#perms {
+  padding: 18px;
+}
+
+#perms p {
+  margin-bottom: 15px;
+}
+
+#perms button {
+  padding: 10px 25px;
+  margin-top: 15px;
+}
+
+/* Header */
+
+#header {
+  background-color: #fff;
+  padding: 10px;
+  border-bottom: 1px solid #00000014;
+}
+
+#header h1 {
+  color: #0000008c;
+  padding-top: 5px;
+  margin-left: 5px;
+}
+
+#header img {
+  max-height: 45px;
+  width: auto;
+}
+
+/* Footer */
+
+#footer {
+  padding: 15px;
+  background-color: rgb(240, 240, 240);
+  border-top: 1px solid #00000014;
+}
+
+/* Add friend */
+
+#add-friend input {
+  background-color: #000a200d;
+  color: #262626;
+  border-width: 0px;
+  padding: 6px;
+  padding-left: 10px;
+  border-radius: 6px;
+  font-size: 18px;
+}
+
+#add-friend input:focus {
+  background-color: #000a201a;
+  outline: none;
+}
+
+#add-button {
+  font-size: 18px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: 10px;
+  background-color: rgb(20, 180, 53, 0.6);
+  border-width: 0;
+}
+
+#add-button:hover {
+  background-color: #13aa52;
+}
+
+#err-message {
+  color: rgb(239, 50, 50);
+  margin-bottom: 16px;
+}
+
+/* Searching Friend*/
+
 #mini-spinner {
   border: 5px solid #f3f3f3; /* Light grey */
   border-top: 5px solid #3498db; /* Blue */
@@ -228,4 +215,17 @@ button:hover {
   font-size: 18px;
   padding: 6px;
   margin-left: 10px;
+}
+
+/* Friends List */
+
+#friend-list {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+
+#no-friends {
+  margin: 20px 5px 20px 5px;
 }
