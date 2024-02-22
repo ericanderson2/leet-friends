@@ -10,6 +10,9 @@ document.getElementById("enable-perms").addEventListener("click", () => {
 
 const friends_list = document.getElementById("friend-list");
 const no_friends = document.getElementById("no-friends");
+const main_spinner = document.getElementById("main-spinner");
+const searching_friend = document.getElementById("searching-friend");
+const add_friend_bar = document.getElementById("add-friend");
 
 let required = {
   origins: ["https://leetcode.com/graphql"]
@@ -31,7 +34,10 @@ browser.permissions.contains(required).then(has_perms => {
 
         if (friends.length == 0) {
           no_friends.classList.remove("hidden");
+        } else {
+          main_spinner.classList.remove("hidden");
         }
+
     }));
   } else {
     document.getElementById("add-friend").classList.add("hidden");
@@ -87,11 +93,32 @@ function filterField(e) {
 function add_friend() {
   let user = document.getElementById("user-input").value;
   if (user.length > 0) {
+    if (friend_in_list(user)) {
+        flash_error("User already exists in friends list");
+        return
+    }
+
     get_user(document.getElementById("user-input").value, data => validate_new_friend(data));
+    document.getElementById("added-username").innerText = user;
+    searching_friend.classList.remove("hidden");
+    add_friend_bar.classList.add("hidden");
   }
 }
 
+function friend_in_list(user) {
+  user = user.toLowerCase();
+  for (let i in friends) {
+    if (friends[i].toLowerCase() === user) {
+      return true;
+    }
+  }
+  return false
+}
+
 function validate_new_friend(data) {
+  searching_friend.classList.add("hidden");
+  add_friend_bar.classList.remove("hidden");
+
   if (data["matchedUser"] != null) {
     document.getElementById("user-input").value = "";
     let user = data["matchedUser"]["username"];
@@ -144,6 +171,7 @@ function create_friend_box(data) {
   if (document.getElementById(user) != null) {
     return
   }
+  main_spinner.classList.add("hidden");
   let points = data["matchedUser"]["contributions"]["points"];
   let avatar = data["matchedUser"]["profile"]["userAvatar"];
   let ranking = data["matchedUser"]["profile"]["ranking"].toLocaleString();

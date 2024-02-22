@@ -37,7 +37,6 @@ button {
 
 button:hover {
   box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
-  /*transform: translateY(-2px);*/
 }
 
 .user-row {
@@ -47,7 +46,6 @@ button:hover {
 }
 
 .remove-button {
-  size: 10px;
   background-color: rgb(239, 71, 67, 0.5);
   border-width: 0;
   border-radius: 5px;
@@ -132,7 +130,7 @@ button:hover {
   margin-right: 5px;
 }
 
-#add-friend {
+#footer {
   padding: 15px;
   background-color: rgb(240, 240, 240);
   border-top: 1px solid #00000014;
@@ -157,7 +155,7 @@ button:hover {
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 }
 
 #err-message {
@@ -197,4 +195,37 @@ button:hover {
 
 .hidden {
   display: none;
+}
+
+.loader {
+  border: 10px solid #f3f3f3; /* Light grey */
+  border-top: 10px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1.5s linear infinite;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#mini-spinner {
+  border: 5px solid #f3f3f3; /* Light grey */
+  border-top: 5px solid #3498db; /* Blue */
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+}
+
+#searching-friend p {
+  margin: auto;
+  float: left;
+  font-size: 18px;
+  padding: 6px;
+  margin-left: 10px;
 }

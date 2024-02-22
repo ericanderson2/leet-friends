@@ -20,6 +20,7 @@
         <p>It does not read or store your login info or profile data.</p>
         <button type="button" id="enable-perms">Enable permissions</button>
       </div>
+      <div class="loader hidden" id="main-spinner"></div>
 
       <!-- blueprint
       <div class="friend-box flex" id="lee">
@@ -47,11 +48,18 @@
         </div>
       </div>-->
     </div>
-    <div id="add-friend">
-      <p id="err-message" class="hidden">Could not find user</p>
-      <input type="text" id="user-input" placeholder="username"></input>
-      <button type="button" id="add-button">Add Friend</button>
+    <div id="footer">
+      <div id="add-friend">
+        <p id="err-message" class="hidden">Could not find user</p>
+        <input type="text" id="user-input" placeholder="username"></input>
+        <button type="button" id="add-button">Add Friend</button>
+      </div>
+      <div id="searching-friend" class="flex hidden">
+        <div class="loader" id="mini-spinner"></div>
+        <p class="flex-fill">Adding friend <span id="added-username">lee215</span></p>
+      </div>
     </div>
+
   </div>
 
   <div id="error-content" class="hidden">
