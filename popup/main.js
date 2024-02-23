@@ -160,6 +160,36 @@ function remove_friend(username) {
   }
 }
 
+function edit_friend(username) {
+  document.getElementById("eoa-" + username).classList.add("hidden");
+  document.getElementById("edit-alias-" + username).classList.remove("hidden");
+}
+
+function back_friend(username) {
+  document.getElementById("eoa-" + username).classList.remove("hidden");
+  document.getElementById("edit-alias-" + username).classList.add("hidden");
+}
+
+function change_alias(username) {
+  let alias = document.getElementById("alias-input-" + username).value;
+  if (alias == username || alias == "") {
+    if (username in aliases) {
+      delete aliases[username];
+    }
+    document.getElementById("headline-" + username).innerText = username;
+  } else {
+    aliases[username] = alias;
+    document.getElementById("headline-" + username).innerText = `${alias} (${username})`;
+  }
+
+  browser.storage.sync.set({
+    "aliases": aliases
+  });
+
+  document.getElementById("eoa-" + username).classList.remove("hidden");
+  document.getElementById("edit-alias-" + username).classList.add("hidden");
+}
+
 function sort_friends() {
   [...friends_list.children]
   .sort((a, b) => a.getAttribute("user") > b.getAttribute("user") ? 1 : -1)
@@ -194,27 +224,40 @@ function create_friend_box(data) {
   let headline = (user in aliases) ? `${aliases[user]} <span>(${user})</span>` : user;
 
   var div = document.createElement("div");
+
   div.innerHTML = `<img src="${avatar}" class="avatar" alt="avatar"/>
-  <div class="flex-fill" style="margin-top:5px;margin-bottom:5px;">
-    <div class="flex user-row">
-      <h3><a href="https://leetcode.com/${user}">${headline}</a></h3>
-      <p class="last-online">Submitted ${(days > -1) ? days : "∞"} Day${(days == 1) ? "" : "s"} Ago</p>
-      <div class="flex-fill">
-        <button style="float:right;" class="remove-button" id="rm-${user}">x</button>
+    <div class="flex-fill" class="east-of-avatar" id="eoa-${user}">
+      <div class="flex user-row">
+        <h3><a href="https://leetcode.com/${user}" id="headline-${user}">${headline}</a></h3>
+        <p class="last-online">Submitted ${(days > -1) ? days : "∞"} Day${(days == 1) ? "" : "s"} Ago</p>
+        <div class="flex-fill">
+          <button class="friend-button remove-button" id="rm-${user}">x</button>
+          <button class="friend-button edit-button" id="ed-${user}">✎</button>
+        </div>
+      </div>
+      <div class="flex user-row">
+        <p>Rank: ${ranking} ${stars}</p>
+        <div class="flex-fill">
+          <p style="float:right;">🪙 ${points}</p>
+        </div>
+      </div>
+      <div class="flex user-row">
+        <p>⬛${all} 🟩${easy} 🟨${medium} 🟥${hard}</p>
+        <div class="flex-fill">
+          <p style="float:right;">${submission_percent}% AC</p>
+        </div>
       </div>
     </div>
-    <div class="flex user-row">
-      <p>Rank: ${ranking} ${stars}</p>
-      <div class="flex-fill">
-        <p style="float:right;">🪙 ${points}</p>
+    <div class="change-alias flex hidden" id="edit-alias-${user}">
+      <div class="alias-col">
+        <p>Change alias for <span class="bold">${user}</span>:</p>
+        <input type="text" placeholder="${user}" id="alias-input-${user}"></input>
       </div>
-    </div>
-    <div class="flex user-row">
-      <p>⬛${all} 🟩${easy} 🟨${medium} 🟥${hard}</p>
-      <div class="flex-fill">
-        <p style="float:right;">${submission_percent}% AC</p>
+      <div class="alias-col">
+        <button type="button" class="alias-button red-button" id="bk-${user}">Back</button>
+        <button type="button" class="alias-button" id="ch-${user}">Change</button>
       </div>
-    </div>`
+    </div>`;
 
     div.classList.add("friend-box");
     div.classList.add("flex");
@@ -222,7 +265,11 @@ function create_friend_box(data) {
 
     div.id = user;
     div.setAttribute("user", user.toLowerCase()); // used for sorting friends list alphabetically
+
     document.getElementById("rm-" + user).addEventListener("click", () => remove_friend(user));
+    document.getElementById("ed-" + user).addEventListener("click", () => edit_friend(user));
+    document.getElementById("bk-" + user).addEventListener("click", () => back_friend(user));
+    document.getElementById("ch-" + user).addEventListener("click", () => change_alias(user));
 
     sort_friends();
 }
