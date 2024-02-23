@@ -14,7 +14,7 @@ This extension is not yet published in the add-ons store. You can try it out by 
 
 ## How to use
 
-After you install the extension, you must grant permissions to allow it to access the LeetCode API. Right click the icon, go to manage extensions, permissions, and flip the toggle button to yes.
+After you install the extension, you must grant permissions to allow it to access the LeetCode API. Open LeetFriends, and click "Enable Permissions", then "Allow", and then reopen the extension.
 
 - Click the extension icon to open the graphical panel.
 - Add friends by typing their name in the input box, and clicking the "Add Friend" button.
