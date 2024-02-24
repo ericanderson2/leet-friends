@@ -196,20 +196,39 @@ function sort_friends() {
   .forEach(node => friends_list.appendChild(node));
 }
 
+// Remove all characters that are not letters or digits
+function sanitize(value) {
+  let badValues = /[^\w\d]/gi;
+  return String(value).replace(badValues, '');
+}
+
+function escape(value) {
+  return String(value)
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#039;');
+}
+
 function create_friend_box(data) {
-  let user = data["matchedUser"]["username"];
+  let user = sanitize(data["matchedUser"]["username"]);
   if (document.getElementById(user) != null) {
     return
   }
   main_spinner.classList.add("hidden");
-  let points = data["matchedUser"]["contributions"]["points"];
-  let avatar = data["matchedUser"]["profile"]["userAvatar"];
-  let ranking = data["matchedUser"]["profile"]["ranking"].toLocaleString();
-  let all = data["matchedUser"]["submitStats"]["acSubmissionNum"][0]["count"];
-  let easy = data["matchedUser"]["submitStats"]["acSubmissionNum"][1]["count"];
-  let medium = data["matchedUser"]["submitStats"]["acSubmissionNum"][2]["count"];
-  let hard = data["matchedUser"]["submitStats"]["acSubmissionNum"][3]["count"];
+
+  let points = sanitize(data["matchedUser"]["contributions"]["points"]);
+  let avatar = escape(data["matchedUser"]["profile"]["userAvatar"]);
+  let ranking = parseInt(sanitize(data["matchedUser"]["profile"]["ranking"]), 10).toLocaleString();
+  let all = sanitize(data["matchedUser"]["submitStats"]["acSubmissionNum"][0]["count"]);
+  let easy = sanitize(data["matchedUser"]["submitStats"]["acSubmissionNum"][1]["count"]);
+  let medium = sanitize(data["matchedUser"]["submitStats"]["acSubmissionNum"][2]["count"]);
+  let hard = sanitize(data["matchedUser"]["submitStats"]["acSubmissionNum"][3]["count"]);
   let submission_percent = (data["matchedUser"]["submitStats"]["totalSubmissionNum"][0]["submissions"] == 0) ? 0 : Math.round(100 * data["matchedUser"]["submitStats"]["acSubmissionNum"][0]["submissions"] / data["matchedUser"]["submitStats"]["totalSubmissionNum"][0]["submissions"]);
+  submission_percent = sanitize(submission_percent);
+
+  // Calculate number of days since last submission
   let days = -1
   var now = new Date;
   var utc_timestamp = Date.UTC(now.getUTCFullYear(),now.getUTCMonth(), now.getUTCDate() ,
@@ -217,14 +236,17 @@ function create_friend_box(data) {
   if (data["recentSubmissionList"].length > 0) {
     days = Math.floor(((utc_timestamp / 1000) - data["recentSubmissionList"][0]["timestamp"]) / (60 * 60 * 24));
   }
+  days = sanitize(days);
+
   let stars = "";
   for (let i = 0; i < data["matchedUser"]["profile"]["starRating"]; i++) {
     stars += "⭐";
   }
+
   let headline = (user in aliases) ? `${aliases[user]} <span>(${user})</span>` : user;
 
   var div = document.createElement("div");
-
+  // All values have been sanitized
   div.innerHTML = `<img src="${avatar}" class="avatar" alt="avatar"/>
     <div class="flex-fill" class="east-of-avatar" id="eoa-${user}">
       <div class="flex user-row">
@@ -270,6 +292,7 @@ function create_friend_box(data) {
     document.getElementById("ed-" + user).addEventListener("click", () => edit_friend(user));
     document.getElementById("bk-" + user).addEventListener("click", () => back_friend(user));
     document.getElementById("ch-" + user).addEventListener("click", () => change_alias(user));
+    document.getElementById("alias-input-" + user).addEventListener("input", filterField);
 
     sort_friends();
 }
