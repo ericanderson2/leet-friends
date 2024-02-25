@@ -236,7 +236,7 @@ function create_friend_box(data) {
   if (data["recentSubmissionList"].length > 0) {
     days = Math.floor(((utc_timestamp / 1000) - data["recentSubmissionList"][0]["timestamp"]) / (60 * 60 * 24));
   }
-  days = sanitize(days);
+  days = Number(days);
 
   let stars = "";
   for (let i = 0; i < data["matchedUser"]["profile"]["starRating"]; i++) {
