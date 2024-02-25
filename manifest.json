@@ -1,5 +1,5 @@
 {
-  "description": "Adds a browser action icon to the toolbar. Click the button to show the LeetFriends panel. From this panel you can see and add LeetCode friends.",
+  "description": "Opens up a panel which displays LeetCode users you follow. Follow friends to see their real-time statistics, all in one place.",
   "manifest_version": 3,
   "name": "LeetFriends",
   "version": "1.0",
