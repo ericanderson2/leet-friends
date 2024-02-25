@@ -154,6 +154,14 @@ function remove_friend(username) {
   browser.storage.sync.set({
     "friends": friends
   });
+
+  if (username in aliases) {
+    delete aliases[username];
+  }
+  browser.storage.sync.set({
+    "aliases": aliases
+  });
+
   document.getElementById(username).remove();
   if (friends.length == 0) {
       no_friends.classList.remove("hidden");
@@ -272,7 +280,7 @@ function create_friend_box(data) {
     </div>
     <div class="change-alias flex hidden" id="edit-alias-${user}">
       <div class="alias-col">
-        <p>Change alias for <span class="bold">${user}</span>:</p>
+        <p>Change nickname for <span class="bold">${user}</span>:</p>
         <input type="text" placeholder="${user}" id="alias-input-${user}"></input>
       </div>
       <div class="alias-col">
