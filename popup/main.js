@@ -238,13 +238,25 @@ function create_friend_box(data) {
 
   // Calculate number of days since last submission
   let days = -1
-  var now = new Date;
-  var utc_timestamp = Date.UTC(now.getUTCFullYear(),now.getUTCMonth(), now.getUTCDate() ,
+  let now = new Date;
+  let utc_timestamp = Date.UTC(now.getUTCFullYear(),now.getUTCMonth(), now.getUTCDate() ,
       now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
+
+  let hours = false;
+  let minutes = false;
   if (data["recentSubmissionList"].length > 0) {
-    days = Math.floor(((utc_timestamp / 1000) - data["recentSubmissionList"][0]["timestamp"]) / (60 * 60 * 24));
+    let milliseconds = (utc_timestamp / 1000) - data["recentSubmissionList"][0]["timestamp"];
+    if (milliseconds >= 60 * 60 * 24) {
+      days = Math.floor(milliseconds / (60 * 60 * 24));
+    } else if (milliseconds >= 60 * 60) {
+      hours = true;
+      days = Math.ceil(milliseconds / (60 * 60));
+    } else {
+      minutes = true;
+      days = Math.ceil(milliseconds / 60);
+    }
+    days = Number(days);
   }
-  days = Number(days);
 
   let stars = "";
   for (let i = 0; i < data["matchedUser"]["profile"]["starRating"]; i++) {
@@ -259,7 +271,7 @@ function create_friend_box(data) {
     <div class="flex-fill" class="east-of-avatar" id="eoa-${user}">
       <div class="flex user-row">
         <h3><a href="https://leetcode.com/${user}" id="headline-${user}">${headline}</a></h3>
-        <p class="last-online">Submitted ${(days > -1) ? days : "∞"} Day${(days == 1) ? "" : "s"} Ago</p>
+        <p class="last-online">Submitted ${(days > -1) ? days : "∞"} ${(minutes) ? "Minute" : ((hours) ? "Hour" : "Day")}${(days == 1) ? "" : "s"} Ago</p>
         <div class="flex-fill">
           <button class="friend-button remove-button" id="rm-${user}">x</button>
           <button class="friend-button edit-button" id="ed-${user}">✎</button>
