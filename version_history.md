@@ -1,6 +1,8 @@
 # Version History
 
 # 1.2
+Firefox: 02/27/2024
+
 - Added granularity to last submitted time (minutes, hours)
 - Rounded avatar corners
 
