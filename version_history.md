@@ -1,6 +1,8 @@
 # Version History
 
 ## 1.1
+Firefox: 02/25/2024
+
 - Remove aliases from browser storage when friend is deleted
 - Properly display "submitted x days ago" text when friend has never submitted
 - Change alias -> nickname (front-end only)
