@@ -20,12 +20,16 @@ let required = {
 
 let friends = [];
 let aliases = {};
+let watching = [];
 
 browser.permissions.contains(required).then(has_perms => {
   if (has_perms) {
     browser.storage.sync.get("aliases").then(res => {
       aliases = res.aliases || {};
     }).then(
+    browser.storage.sync.get("watching").then(res => {
+      watching = res.watching || [];
+    })).then(
     browser.storage.sync.get("friends").then(res => {
         friends = res.friends || [];
         for (let i in friends) {
@@ -149,6 +153,19 @@ function flash_error(message) {
   }, "2500");
 }
 
+function toggle_notifications(username) {
+  if (watching.includes(username)) {
+    watching = watching.filter(x => x !== username);
+    document.getElementById("notify-" + username).classList.add("greyscale");
+  } else {
+    watching.push(username);
+    document.getElementById("notify-" + username).classList.remove("greyscale");
+  }
+  browser.storage.sync.set({
+    "watching": watching
+  });
+}
+
 function remove_friend(username) {
   friends = friends.filter(x => x !== username);
   browser.storage.sync.set({
@@ -157,10 +174,17 @@ function remove_friend(username) {
 
   if (username in aliases) {
     delete aliases[username];
+    browser.storage.sync.set({
+      "aliases": aliases
+    });
   }
-  browser.storage.sync.set({
-    "aliases": aliases
-  });
+
+  if (watching.includes(username)) {
+    watching = watching.filter(x => x !== username);
+    browser.storage.sync.set({
+      "watching": watching
+    });
+  }
 
   document.getElementById(username).remove();
   if (friends.length == 0) {
@@ -274,6 +298,7 @@ function create_friend_box(data) {
         <p class="last-online">Submitted ${(days > -1) ? days : "∞"} ${(minutes) ? "Minute" : ((hours) ? "Hour" : "Day")}${(days == 1) ? "" : "s"} Ago</p>
         <div class="flex-fill">
           <button class="friend-button remove-button" id="rm-${user}">x</button>
+          <button class="friend-button edit-button greyscale" id="notify-${user}">🔔</button>
           <button class="friend-button edit-button" id="ed-${user}">✎</button>
         </div>
       </div>
@@ -312,7 +337,12 @@ function create_friend_box(data) {
     document.getElementById("ed-" + user).addEventListener("click", () => edit_friend(user));
     document.getElementById("bk-" + user).addEventListener("click", () => back_friend(user));
     document.getElementById("ch-" + user).addEventListener("click", () => change_alias(user));
+    document.getElementById("notify-" + user).addEventListener("click", () => toggle_notifications(user));
     document.getElementById("alias-input-" + user).addEventListener("input", filterField);
+
+    if (watching.includes(user)) {
+      document.getElementById("notify-" + user).classList.remove("greyscale");
+    }
 
     sort_friends();
 }

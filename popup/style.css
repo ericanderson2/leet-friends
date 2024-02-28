@@ -157,6 +157,10 @@ input:focus {
   background-color: #e6e6e6;
 }
 
+.greyscale {
+  filter: grayscale(100%);
+}
+
 .change-alias {
   width: 100%;
   padding-top: 8px;
