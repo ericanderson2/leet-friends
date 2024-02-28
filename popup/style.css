@@ -253,6 +253,19 @@ input:focus {
   width: auto;
 }
 
+#header-info {
+  float: right;
+  text-align: right;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#header-info * {
+  color: #0000008c;
+}
+
 /* Footer */
 
 #footer {

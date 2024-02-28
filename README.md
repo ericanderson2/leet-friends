@@ -20,6 +20,7 @@ After you install the extension, you must grant permissions to allow it to acces
 - Add friends by typing their name in the input box, and clicking the "Add Friend" button.
 - Remove friends by clicking on the red delete button in the top right corner of the friend box.
 - Edit a friend's nickname by clicking the ✎ button and entering an alias.
+- Toggle push notifications for a friend by clicking the 🔔 button.
 
 Each time you open the panel or add a friend, it will take about a second to fetch the data from the LeetCode API.
 
@@ -28,3 +29,5 @@ Once you add a friend, they will remain in your friends list until they are remo
 ## Necessary Permissions
 - Host access to https://leetcode.com (for API calls)
 - Storage (to store friend usernames)
+- Notifications (to show notifications for a friend, if toggled)
+- Alarms (to keep background script loaded for push notifications)

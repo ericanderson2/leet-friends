@@ -1,5 +1,10 @@
 # Version History
 
+# 1.3
+- Added push notifications on friend submission
+- Require alarms permission: Used to keep background script loaded
+- Require tabs permission: Allows notification bubbles to link to user profile
+
 # 1.2
 Firefox: 02/27/2024
 
