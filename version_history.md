@@ -4,6 +4,7 @@
 Firefox: 02/28/2024
 
 - Added push notifications on friend submission. Notifications are off by default. Toggle the bell button on a friend in order to be notified whenever they make a submission.
+- Require notifications permission: Used to send notifications when a friend makes a submission
 - Require alarms permission: Used to keep background script loaded
 - Require tabs permission: Allows notification bubbles to link to user profile
 
