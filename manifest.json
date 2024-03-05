@@ -2,7 +2,7 @@
   "description": "Opens up a panel which displays LeetCode users you follow. Follow friends to see their real-time statistics, all in one place.",
   "manifest_version": 3,
   "name": "LeetFriends",
-  "version": "1.3",
+  "version": "1.4",
   "homepage_url": "https://github.com/ericanderson2/leet-friends",
   "icons": {
     "48": "icons/leet-friends-48.png"
@@ -17,8 +17,7 @@
   "permissions": [
     "storage",
     "notifications",
-    "tabs",
-    "alarms"
+    "tabs"
   ],
 
   "host_permissions": [
