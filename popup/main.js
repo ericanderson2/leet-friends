@@ -1,5 +1,9 @@
 "use strict";
 
+if (typeof browser == "undefined") {
+  globalThis.browser = chrome;
+}
+
 document.getElementById("add-button").addEventListener("click", () => add_friend());
 document.getElementById("user-input").addEventListener("input", filterField);
 
@@ -22,6 +26,7 @@ let friends = [];
 let aliases = {};
 let watching = [];
 
+// Check permissions and load data from storage
 browser.permissions.contains(required).then(has_perms => {
   if (has_perms) {
     browser.storage.sync.get("aliases").then(res => {
@@ -49,6 +54,7 @@ browser.permissions.contains(required).then(has_perms => {
   }
 });
 
+// Retrieves a user's profile information
 async function get_user(username, callback = data => received_user(data)) {
   let url = `https://leetcode.com/graphql/?query=query{
   matchedUser(username: "${username}") {

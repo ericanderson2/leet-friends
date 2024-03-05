@@ -41,7 +41,10 @@
   }],
 
   "background": {
-    "scripts": ["scripts/background.js"]
+    "service_worker": "scripts/background.js",
+    "scripts": [
+      "scripts/background.js"
+    ]
   }
 
 }

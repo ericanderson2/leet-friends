@@ -1,5 +1,9 @@
 "use strict";
 
+if (typeof browser == "undefined") {
+  globalThis.browser = chrome;
+}
+
 let last_submission_time = {};
 let question_cache = {};
 

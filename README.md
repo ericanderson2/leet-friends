@@ -10,7 +10,7 @@ This extension is not affiliated with LeetCode.
 
 Firefox: LeetFriends is available in the [Firefox Add-ons Store](https://addons.mozilla.org/en-US/firefox/addon/leetfriends/)
 
-Chromium browsers: Currently, LeetFriends is only available for Firefox. Most of the code should work on other browsers, but slight changes to the manifest and the script files will be needed.
+Chromium browsers: Currently, LeetFriends is only available for Firefox. This code should currently work on Chromium browsers; however, the CSS is not showing correctly.
 
 ## How to use
 
