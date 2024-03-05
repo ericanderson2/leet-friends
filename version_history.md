@@ -1,6 +1,14 @@
 # Version History
 
-# 1.3
+## 1.4
+Firefox: 03/05/2024
+
+- Added support for Chromium browsers!
+- Notifications now show the question number
+- Fix CSS to give the same appearance on Firefox and Chrome
+- Remove alarms permission: use runtime.getPlatformInfo() to keep the script alive instead
+
+## 1.3
 Firefox: 02/28/2024
 
 - Added push notifications on friend submission. Notifications are off by default. Toggle the bell button on a friend in order to be notified whenever they make a submission.
@@ -8,7 +16,7 @@ Firefox: 02/28/2024
 - Require alarms permission: Used to keep background script loaded
 - Require tabs permission: Allows notification bubbles to link to user profile
 
-# 1.2
+## 1.2
 Firefox: 02/27/2024
 
 - Added granularity to last submitted time (minutes, hours)

@@ -7,6 +7,8 @@ if (typeof browser == "undefined") {
 let last_submission_time = {};
 let question_cache = {};
 
+let notification_counter = 0;
+
 browser.runtime.onMessage.addListener(
   function(url, sender, onSuccess) {
     fetch(url).then(response => response.json()).then(data => onSuccess(data["data"]));
@@ -16,7 +18,7 @@ browser.runtime.onMessage.addListener(
 
 browser.notifications.onClicked.addListener((id, index) => {
   browser.tabs.create({
-    url: "https://leetcode.com/" + id,
+    url: "https://leetcode.com/" + id.split(":")[0],
   });
 });
 
@@ -30,6 +32,7 @@ function keep_alive() {
 
 // Check if a user has made a recent submission, and send a notification if so
 async function check_last_submission(username, aliases) {
+  console.log("checking " + username);
   let url = `https://leetcode.com/graphql/?query=query{
     recentSubmissionList(username: "${username}", limit: 1) {
         title
@@ -50,6 +53,9 @@ async function check_last_submission(username, aliases) {
   let submission = json["data"]["recentSubmissionList"][0];
   let last_time = last_submission_time[username] ?? -1;
 
+  console.log("last_time: " + last_time);
+  console.log("current: " + submission["timestamp"]);
+
   if (submission["timestamp"] != last_time) {
     if (last_time > -1) {
       let id = await get_question_num(submission["titleSlug"]);
@@ -59,7 +65,9 @@ async function check_last_submission(username, aliases) {
       if (username in aliases) {
         title = `${aliases[username]} (${username}) made a submission`;
       }
-      browser.notifications.create(username, {
+
+      notification_counter += 1;
+      browser.notifications.create(username + ":" + notification_counter, {
         type: "basic",
         iconUrl: "../images/lf_logo.png",
         title,
@@ -72,6 +80,7 @@ async function check_last_submission(username, aliases) {
 
 // Check if any friends on the watchlist have made a recent submission
 function get_friend_updates() {
+  console.log("polling for updates");
   let aliases = {};
   browser.storage.sync.get("aliases").then(res => {
     aliases = res.aliases || {};

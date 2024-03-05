@@ -200,6 +200,7 @@ function remove_friend(username) {
 
 function edit_friend(username) {
   document.getElementById("eoa-" + username).classList.add("hidden");
+  console.log(document.getElementById("eoa-" + username));
   document.getElementById("edit-alias-" + username).classList.remove("hidden");
 }
 
@@ -298,9 +299,9 @@ function create_friend_box(data) {
   var div = document.createElement("div");
   // All values have been sanitized
   div.innerHTML = `<img src="${avatar}" class="avatar" alt="avatar"/>
-    <div class="flex-fill" class="east-of-avatar" id="eoa-${user}">
+    <div class="east-of-avatar flex" id="eoa-${user}">
       <div class="flex user-row">
-        <h3><a href="https://leetcode.com/${user}" id="headline-${user}">${headline}</a></h3>
+        <h3><a target="_blank" href="https://leetcode.com/${user}" id="headline-${user}">${headline}</a></h3>
         <p class="last-online">Submitted ${(days > -1) ? days : "∞"} ${(minutes) ? "Minute" : ((hours) ? "Hour" : "Day")}${(days == 1) ? "" : "s"} Ago</p>
         <div class="flex-fill">
           <button class="friend-button remove-button" id="rm-${user}">x</button>
