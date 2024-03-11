@@ -8,9 +8,10 @@ This extension is not affiliated with LeetCode.
 
 ## Installation Instructions
 
-Firefox: LeetFriends is available in the [Firefox Add-ons Store](https://addons.mozilla.org/en-US/firefox/addon/leetfriends/)
+Firefox: [Firefox Add-ons Store](https://addons.mozilla.org/en-US/firefox/addon/leetfriends/)
+Edge: [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/leetfriends/bidcgeceaakflgkjapkaajgcdhepfimn)
 
-Chromium browsers: Currently, LeetFriends is only available for Firefox. This code should currently work on Chromium browsers; however, the CSS is not showing correctly.
+Chrome and other chromium browsers: The extension is still pending review in the Chrome store. However, the current version in this repository should work on Chrome. If your browser allows for installing chromium extensions from the Edge store, it should work on your browser.
 
 ## How to use
 
