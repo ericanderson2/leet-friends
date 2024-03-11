@@ -2,6 +2,7 @@
 
 ## 1.4
 Firefox: 03/05/2024
+Edge: 03/11/2024
 
 - Added support for Chromium browsers!
 - Notifications now show the question number
