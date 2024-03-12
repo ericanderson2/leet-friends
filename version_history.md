@@ -1,5 +1,10 @@
 # Version History
 
+## 1.5
+Firefox: 03/12/2024
+
+- Remove tabs permission: Apparently this is not required to open a new tab.
+
 ## 1.4
 Firefox: 03/05/2024
 

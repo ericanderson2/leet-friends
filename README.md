@@ -32,4 +32,3 @@ Once you add a friend, they will remain in your friends list until they are remo
 - Host access to https://leetcode.com (for API calls)
 - Storage (to store friend usernames)
 - Notifications (to show notifications for a friend, if toggled)
-- Tabs (allows notifications to link to user profile)
