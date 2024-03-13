@@ -3,7 +3,7 @@
 ## 1.5
 Firefox: 03/12/2024
 
-Chrome: 03/12/2024
+Chrome: 03/13/2024
 
 - Remove tabs permission: Apparently this is not required to open a new tab.
 
