@@ -10,9 +10,9 @@ This extension is not affiliated with LeetCode.
 
 Firefox: [Firefox Add-ons Store](https://addons.mozilla.org/en-US/firefox/addon/leetfriends/)
 
-Edge: [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/leetfriends/bidcgeceaakflgkjapkaajgcdhepfimn)
+Chrome, Brave, Opera: [Chrome Web Store](https://chromewebstore.google.com/detail/leetfriends/dandpnnlcoaaaphhopnaajagdidhldak)
 
-Chrome and other chromium browsers: The extension is still pending review in the Chrome store. However, the current version in this repository should work on Chrome. If your browser allows for installing chromium extensions from the Edge store, it should work on your browser.
+Edge: [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/leetfriends/bidcgeceaakflgkjapkaajgcdhepfimn)
 
 ## How to use
 
