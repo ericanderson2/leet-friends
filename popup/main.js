@@ -17,6 +17,20 @@ const no_friends = document.getElementById("no-friends");
 const main_spinner = document.getElementById("main-spinner");
 const searching_friend = document.getElementById("searching-friend");
 const add_friend_bar = document.getElementById("add-friend");
+const emojis = {
+  "10": "🔟",
+  "69": "😏",
+  "100": "💯",
+  "314": "🥧",
+  "365": "📅",
+  "420": "🌿",
+  "500": "🔥",
+  "555": "📞",
+  "666": "😈",
+  "777": "🍀",
+  "1000": "🤓",
+  "1337": "💻"
+}
 
 let required = {
   origins: ["https://leetcode.com/graphql"]
@@ -42,7 +56,7 @@ browser.permissions.contains(required).then(has_perms => {
         }
 
         if (friends.length == 0) {
-          no_friends.classList.remove("hidden");
+        //  no_friends.classList.remove("hidden");
         } else {
           main_spinner.classList.remove("hidden");
         }
@@ -294,6 +308,11 @@ function create_friend_box(data) {
     stars += "⭐";
   }
 
+  let emoji = "⬛";
+  if (all in emojis) {
+    emoji = emojis[all];
+  }
+
   let headline = (user in aliases) ? `${aliases[user]} <span>(${user})</span>` : user;
 
   var div = document.createElement("div");
@@ -316,7 +335,7 @@ function create_friend_box(data) {
         </div>
       </div>
       <div class="flex user-row">
-        <p>⬛${all} 🟩${easy} 🟨${medium} 🟥${hard}</p>
+        <p>${emoji}${all} 🟩${easy} 🟨${medium} 🟥${hard}</p>
         <div class="flex-fill">
           <p style="float:right;">${submission_percent}% AC</p>
         </div>

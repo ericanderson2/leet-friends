@@ -14,7 +14,10 @@
       <h1>LeetFriends</h1>
       <div class="flex-fill">
         <div id="header-info">
-          <p>v1.5</p>
+          <div id="settings-button" class="flex">
+            <p>v1.6</p>
+            <button class="friend-button edit-button">⚙</button>
+          </div>
           <p><a target="_blank" href="https://github.com/ericanderson2/leet-friends/blob/main/version_history.md">What's New?</a></p>
         </div>
       </div>
@@ -32,6 +35,42 @@
             </a>
           </div>
         </div>
+      </div>
+      <div id="settings">
+        <div class="settings-head">
+          <h2>Settings</h2>
+          <button type="button" class="alias-button">Save and Return</button>
+        </div>
+        <h3 style="margin-bottom: 20px;">Display</h3>
+        <ul>
+          <li>
+            <input type="checkbox" id="easter-eggs" checked />
+            <label for="easter-eggs"> Emoji easter eggs</label>
+          </li>
+          <li>
+            <input type="checkbox" id="stars" checked />
+            <label for="stars"> Star rating</label>
+          </li>
+          <li>
+            <input type="checkbox" id="badges" checked />
+            <label for="badges"> Current badge</label>
+          </li>
+        </ul>
+        <h3>Sorting</h3>
+        <ul>
+          <li>
+            <label for="sort-method">Sort by:</label>
+            <select id="sort-method">
+             <option value="username">Username</option>
+             <option value="submitted">Last submitted</option>
+             <option value="rank">Rank</option>
+            </select>
+          </li>
+          <li>
+            <input type="checkbox" id="pin-notifications" checked />
+            <label for="pin-notifications"> Pin notifying 🔔 friends to top</label>
+          </li>
+        </ul>
       </div>
       <div class="loader hidden" id="main-spinner"></div>
 

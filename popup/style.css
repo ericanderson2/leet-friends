@@ -272,6 +272,17 @@ input:focus {
   color: #0000008c;
 }
 
+#settings-button {
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin-bottom: 2px;
+}
+
+#settings-button button {
+  font-size: 16px;
+  line-height: 10px;
+}
+
 /* Footer */
 
 #footer {
@@ -331,4 +342,64 @@ input:focus {
 
 #no-friends {
   margin: 20px 5px 20px 5px;
+}
+
+/* Settings */
+
+#settings {
+  max-width: 500px;
+  margin: 10px;
+  margin-left: 30px;
+}
+
+#settings h2 {
+  color: #0000008c;
+  font-size: 26px;
+}
+
+#settings h3 {
+  margin-bottom: 15px;
+  margin-left: 20px;
+  font-size: 20px;
+  color: #0000008c;
+}
+
+#settings ul {
+  list-style-type: none;
+  margin: 0;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+#settings li {
+  margin-left: 20px;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+#settings input {
+  margin-right: 8px;
+  height: 18px;
+  width: 18px;
+}
+
+#settings select {
+  font-size: 16px;
+  padding: 5px;
+  background-color: #fff;
+  border: 1px solid black;
+  border-radius: 3px;
+  margin-left: 5px;
+}
+
+#settings button {
+  margin: 0px;
+  width: auto;
+}
+
+.settings-head {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
 }

@@ -32,7 +32,6 @@ function keep_alive() {
 
 // Check if a user has made a recent submission, and send a notification if so
 async function check_last_submission(username, aliases) {
-  console.log("checking " + username);
   let url = `https://leetcode.com/graphql/?query=query{
     recentSubmissionList(username: "${username}", limit: 1) {
         title
@@ -52,9 +51,6 @@ async function check_last_submission(username, aliases) {
 
   let submission = json["data"]["recentSubmissionList"][0];
   let last_time = last_submission_time[username] ?? -1;
-
-  console.log("last_time: " + last_time);
-  console.log("current: " + submission["timestamp"]);
 
   if (submission["timestamp"] != last_time) {
     if (last_time > -1) {
@@ -80,7 +76,6 @@ async function check_last_submission(username, aliases) {
 
 // Check if any friends on the watchlist have made a recent submission
 function get_friend_updates() {
-  console.log("polling for updates");
   let aliases = {};
   browser.storage.sync.get("aliases").then(res => {
     aliases = res.aliases || {};
