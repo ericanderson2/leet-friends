@@ -14,7 +14,7 @@ document.getElementById("enable-perms").addEventListener("click", () => {
   window.close();
 });
 
-for (let element of ["easter_eggs", "stars", "badges", "pin_notify", "sort_method"]) {
+for (let element of ["easter_eggs", "stars", "nickname", "pin_notify", "sort_method"]) {
   document.getElementById(element).addEventListener("input", settings_changed);
 }
 
@@ -52,12 +52,12 @@ browser.storage.sync.get("settings").then(res => {
   settings = res.settings || {
     "easter_eggs": true,
     "stars": true,
-    "badge": true,
+    "nickname": false,
     "pin_notify": true,
     "sort_method": "submitted"
   };
 
-  for (let element of ["easter_eggs", "stars", "badges", "pin_notify"]) {
+  for (let element of ["easter_eggs", "stars", "nickname", "pin_notify"]) {
     document.getElementById(element).checked = settings[element];
   }
 
@@ -137,9 +137,8 @@ function toggle_settings() {
   }
 
   settings_panel.classList.add("hidden");
-  if (friends.length > 0) {
-    friends_list.classList.remove("hidden");
-  } else {
+  friends_list.classList.remove("hidden");
+  if (friends.length == 0) {
     no_friends.classList.remove("hidden");
   }
 }
@@ -154,6 +153,49 @@ function settings_changed(e) {
   browser.storage.sync.set({
     "settings": settings
   });
+
+  if (e.target.id == "stars") {
+    for (let element of document.getElementsByClassName("stars")) {
+      if (settings["stars"]) {
+        element.classList.remove("hidden");
+      } else {
+        element.classList.add("hidden");
+      }
+    }
+  } else if (e.target.id == "easter_eggs") {
+    for (let element of document.getElementsByClassName("emoji-all")) {
+      if (settings["easter_eggs"]) {
+        element.classList.remove("hidden");
+      } else {
+        element.classList.add("hidden");
+      }
+    }
+
+    for (let element of document.getElementsByClassName("plain-all")) {
+      if (settings["easter_eggs"]) {
+        element.classList.add("hidden");
+      } else {
+        element.classList.remove("hidden");
+      }
+    }
+  } else if (e.target.id == "nickname") {
+    for (let username of friends) {
+      if (settings["nickname"]) {
+        if (username in aliases) {
+          document.getElementById("headline-" + username).innerText = aliases[username];
+        } else {
+          document.getElementById("headline-" + username).innerText = username;
+        }
+      } else {
+        if (username in aliases) {
+          document.getElementById("headline-" + username).innerText = aliases[username] + " (" + username + ")";
+        } else {
+          document.getElementById("headline-" + username).innerText = username;
+        }
+      }
+
+    }
+  }
 
   sort_friends();
 }
@@ -272,7 +314,6 @@ function remove_friend(username) {
 
 function edit_friend(username) {
   document.getElementById("eoa-" + username).classList.add("hidden");
-  console.log(document.getElementById("eoa-" + username));
   document.getElementById("edit-alias-" + username).classList.remove("hidden");
 }
 
@@ -290,7 +331,11 @@ function change_alias(username) {
     document.getElementById("headline-" + username).innerText = username;
   } else {
     aliases[username] = alias;
-    document.getElementById("headline-" + username).innerText = `${alias} (${username})`;
+    if (settings["nickname"]) {
+       document.getElementById("headline-" + username).innerText = alias;
+    } else {
+      document.getElementById("headline-" + username).innerText = `${alias} (${username})`;
+    }
   }
 
   browser.storage.sync.set({
@@ -383,8 +428,10 @@ function create_friend_box(data) {
   if (all in emojis) {
     emoji = emojis[all];
   }
-
   let headline = (user in aliases) ? `${aliases[user]} <span>(${user})</span>` : user;
+  if (settings["nickname"]) {
+    headline = (user in aliases) ? `${aliases[user]}` : user;
+  }
 
   var div = document.createElement("div");
   // All values have been sanitized
@@ -400,13 +447,13 @@ function create_friend_box(data) {
         </div>
       </div>
       <div class="flex user-row">
-        <p>Rank: ${ranking} ${stars}</p>
+        <p>Rank: ${ranking} <span class="stars ${settings["stars"] ? "" : "hidden"}">${stars}</span></p>
         <div class="flex-fill">
           <p style="float:right;">🪙 ${points}</p>
         </div>
       </div>
       <div class="flex user-row">
-        <p>${emoji}${all} 🟩${easy} 🟨${medium} 🟥${hard}</p>
+        <p><span class="emoji-all ${settings["easter_eggs"] ? "" : "hidden"}">${emoji}</span><span class="plain-all ${settings["easter_eggs"] ? "hidden" : ""}">⬛</span>${all} 🟩${easy} 🟨${medium} 🟥${hard}</p>
         <div class="flex-fill">
           <p style="float:right;">${submission_percent}% AC</p>
         </div>

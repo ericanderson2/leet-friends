@@ -126,6 +126,7 @@ input:focus {
   font-style: italic;
   margin-left: 8px;
   margin-right: 5px;
+  margin-top: 1px;
 }
 
 .user-row h3 {
