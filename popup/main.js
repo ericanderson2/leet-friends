@@ -14,7 +14,7 @@ document.getElementById("enable-perms").addEventListener("click", () => {
   window.close();
 });
 
-for (let element of ["easter_eggs", "stars", "nickname", "pin_notify", "sort_method"]) {
+for (let element of ["easter_eggs", "stars", "nickname", "pin_notify", "sort_method", "poll_time"]) {
   document.getElementById(element).addEventListener("input", settings_changed);
 }
 
@@ -49,19 +49,26 @@ let watching = [];
 let settings = {};
 
 browser.storage.sync.get("settings").then(res => {
-  settings = res.settings || {
+  settings = res.settings || {};
+
+  let defaults = {
     "easter_eggs": true,
     "stars": true,
     "nickname": false,
     "pin_notify": true,
-    "sort_method": "submitted"
-  };
+    "sort_method": "submitted",
+    "poll_time": "30000"
+  }
+  Object.entries(defaults).forEach(([key, val]) => {
+    settings[key] = settings[key] ?? val;
+  });
 
   for (let element of ["easter_eggs", "stars", "nickname", "pin_notify"]) {
     document.getElementById(element).checked = settings[element];
   }
 
   document.getElementById("sort_method").value = settings["sort_method"];
+  document.getElementById("poll_time").value = settings["poll_time"];
 });
 
 // Check permissions and load data from storage

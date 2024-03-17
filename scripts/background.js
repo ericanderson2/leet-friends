@@ -8,6 +8,7 @@ let last_submission_time = {};
 let question_cache = {};
 
 let notification_counter = 0;
+const default_poll_time = "30000";
 
 browser.runtime.onMessage.addListener(
   function(url, sender, onSuccess) {
@@ -87,7 +88,10 @@ function get_friend_updates() {
     }
   }));
 
-  setTimeout(get_friend_updates, "30000");
+  browser.storage.sync.get("settings").then(res => {
+    let settings = res.settings || {};
+    setTimeout(get_friend_updates, settings["poll_time"] ?? default_poll_time);
+  });
 }
 
 // Return the frontend id of the given question
