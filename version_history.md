@@ -1,5 +1,13 @@
 # Version History
 
+## 1.6
+Firefox: 03/17/2024
+
+- Added settings menu
+- Added option to change friend ordering method
+- Added option toggle different elements of the display
+- Remove console spam
+
 ## 1.5
 Firefox: 03/12/2024
 
