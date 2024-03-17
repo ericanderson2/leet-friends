@@ -4,8 +4,8 @@
 Firefox: 03/17/2024
 
 - Added settings menu
-- Added option to change friend ordering method
-- Added option toggle different elements of the display
+- Added ability to change friend ordering method
+- Added ability to toggle different elements of the display
 - Remove console spam
 
 ## 1.5
