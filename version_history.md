@@ -1,5 +1,10 @@
 # Version History
 
+## 1.7
+Firefox: 03/17/2024
+
+- Added setting to change the poll frequency for notifications
+
 ## 1.6
 Firefox: 03/17/2024
 
