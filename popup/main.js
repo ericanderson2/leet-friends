@@ -5,6 +5,8 @@ if (typeof browser == "undefined") {
 }
 
 document.getElementById("add-button").addEventListener("click", () => add_friend());
+document.getElementById("enter-settings").addEventListener("click", () => toggle_settings());
+document.getElementById("exit-settings").addEventListener("click", () => toggle_settings());
 document.getElementById("user-input").addEventListener("input", filterField);
 
 document.getElementById("enable-perms").addEventListener("click", () => {
@@ -12,11 +14,16 @@ document.getElementById("enable-perms").addEventListener("click", () => {
   window.close();
 });
 
+for (let element of ["easter_eggs", "stars", "badges", "pin_notify", "sort_method"]) {
+  document.getElementById(element).addEventListener("input", settings_changed);
+}
+
 const friends_list = document.getElementById("friend-list");
 const no_friends = document.getElementById("no-friends");
 const main_spinner = document.getElementById("main-spinner");
 const searching_friend = document.getElementById("searching-friend");
 const add_friend_bar = document.getElementById("add-friend");
+const settings_panel = document.getElementById("settings");
 const emojis = {
   "10": "🔟",
   "69": "😏",
@@ -39,6 +46,23 @@ let required = {
 let friends = [];
 let aliases = {};
 let watching = [];
+let settings = {};
+
+browser.storage.sync.get("settings").then(res => {
+  settings = res.settings || {
+    "easter_eggs": true,
+    "stars": true,
+    "badge": true,
+    "pin_notify": true,
+    "sort_method": "submitted"
+  };
+
+  for (let element of ["easter_eggs", "stars", "badges", "pin_notify"]) {
+    document.getElementById(element).checked = settings[element];
+  }
+
+  document.getElementById("sort_method").value = settings["sort_method"];
+});
 
 // Check permissions and load data from storage
 browser.permissions.contains(required).then(has_perms => {
@@ -56,7 +80,7 @@ browser.permissions.contains(required).then(has_perms => {
         }
 
         if (friends.length == 0) {
-        //  no_friends.classList.remove("hidden");
+          no_friends.classList.remove("hidden");
         } else {
           main_spinner.classList.remove("hidden");
         }
@@ -64,6 +88,7 @@ browser.permissions.contains(required).then(has_perms => {
     }));
   } else {
     document.getElementById("footer").classList.add("hidden");
+    document.getElementById("enter-settings").classList.add("hidden");
     document.getElementById("perms").classList.remove("hidden");
   }
 });
@@ -100,6 +125,37 @@ async function get_user(username, callback = data => received_user(data)) {
   }
 }`;
   browser.runtime.sendMessage(url, callback);
+}
+
+function toggle_settings() {
+  if (settings_panel.classList.contains("hidden")) {
+    settings_panel.classList.remove("hidden");
+    no_friends.classList.add("hidden");
+    friends_list.classList.add("hidden");
+    main_spinner.classList.add("hidden");
+    return;
+  }
+
+  settings_panel.classList.add("hidden");
+  if (friends.length > 0) {
+    friends_list.classList.remove("hidden");
+  } else {
+    no_friends.classList.remove("hidden");
+  }
+}
+
+function settings_changed(e) {
+  if (e.target.type == "checkbox") {
+    settings[e.target.id] = e.target.checked;
+  } else {
+    settings[e.target.id] = e.target.value;
+  }
+
+  browser.storage.sync.set({
+    "settings": settings
+  });
+
+  sort_friends();
 }
 
 function received_user(data) {
@@ -184,6 +240,8 @@ function toggle_notifications(username) {
   browser.storage.sync.set({
     "watching": watching
   });
+
+  sort_friends();
 }
 
 function remove_friend(username) {
@@ -245,8 +303,19 @@ function change_alias(username) {
 
 function sort_friends() {
   [...friends_list.children]
-  .sort((a, b) => a.getAttribute("user") > b.getAttribute("user") ? 1 : -1)
-  .forEach(node => friends_list.appendChild(node));
+  .sort((a, b) => {
+    if (settings["pin_notify"] && watching.includes(a.getAttribute("caps_user")) !== watching.includes(b.getAttribute("caps_user"))) {
+      return watching.includes(a.getAttribute("caps_user")) ? -1 : 1;
+    } else {
+      if (settings["sort_method"] == "username") {
+        return a.getAttribute("user") > b.getAttribute("user") ? 1 : -1;
+      } else if (settings["sort_method"] == "rank") {
+        return Number(a.getAttribute("rank")) > Number(b.getAttribute("rank")) ? 1 : -1;
+      } else {
+        return Number(a.getAttribute("submitted")) > Number(b.getAttribute("submitted")) ? 1 : -1;
+      }
+    }
+  }).forEach(node => friends_list.appendChild(node));
 }
 
 // Remove all characters that are not letters or digits
@@ -273,7 +342,8 @@ function create_friend_box(data) {
 
   let points = sanitize(data["matchedUser"]["contributions"]["points"]);
   let avatar = escape(data["matchedUser"]["profile"]["userAvatar"]);
-  let ranking = parseInt(sanitize(data["matchedUser"]["profile"]["ranking"]), 10).toLocaleString();
+  let rank = parseInt(sanitize(data["matchedUser"]["profile"]["ranking"]), 10);
+  let ranking = rank.toLocaleString();
   let all = sanitize(data["matchedUser"]["submitStats"]["acSubmissionNum"][0]["count"]);
   let easy = sanitize(data["matchedUser"]["submitStats"]["acSubmissionNum"][1]["count"]);
   let medium = sanitize(data["matchedUser"]["submitStats"]["acSubmissionNum"][2]["count"]);
@@ -289,8 +359,9 @@ function create_friend_box(data) {
 
   let hours = false;
   let minutes = false;
+  let milliseconds = 0;
   if (data["recentSubmissionList"].length > 0) {
-    let milliseconds = (utc_timestamp / 1000) - data["recentSubmissionList"][0]["timestamp"];
+    milliseconds = (utc_timestamp / 1000) - data["recentSubmissionList"][0]["timestamp"];
     if (milliseconds >= 60 * 60 * 24) {
       days = Math.floor(milliseconds / (60 * 60 * 24));
     } else if (milliseconds >= 60 * 60) {
@@ -358,6 +429,9 @@ function create_friend_box(data) {
 
     div.id = user;
     div.setAttribute("user", user.toLowerCase()); // used for sorting friends list alphabetically
+    div.setAttribute("caps_user", user);
+    div.setAttribute("rank", rank);
+    div.setAttribute("submitted", milliseconds > 0 ? milliseconds : Infinity);
 
     document.getElementById("rm-" + user).addEventListener("click", () => remove_friend(user));
     document.getElementById("ed-" + user).addEventListener("click", () => edit_friend(user));
