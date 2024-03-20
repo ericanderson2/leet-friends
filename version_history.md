@@ -1,5 +1,11 @@
 # Version History
 
+## 1.8
+Firefox: 03/20/2024
+
+- Added link to the daily problem
+- Notifications for when daily is due soon (off by default)
+
 ## 1.7
 Firefox: 03/17/2024
 
