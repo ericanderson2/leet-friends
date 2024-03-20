@@ -114,6 +114,18 @@ input:focus {
   width: auto;
 }
 
+.badge-container {
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  width: 20px;
+  height: auto;
+  right: 68px;
+  top: 13px;
+}
+
 .east-of-avatar {
   flex-direction: column;
   justify-content: space-around;
@@ -271,6 +283,15 @@ input:focus {
 
 #header-info * {
   color: #0000008c;
+}
+
+#daily-link {
+  margin: auto 10px;
+  padding-top: 5px;
+}
+
+#daily-link img {
+  max-height: 28px;
 }
 
 #settings-button {

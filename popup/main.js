@@ -1,22 +1,15 @@
 "use strict";
 
+// TODO
+// Notifications for daily
+
 if (typeof browser == "undefined") {
   globalThis.browser = chrome;
 }
 
-document.getElementById("add-button").addEventListener("click", () => add_friend());
-document.getElementById("enter-settings").addEventListener("click", () => toggle_settings());
-document.getElementById("exit-settings").addEventListener("click", () => toggle_settings());
-document.getElementById("user-input").addEventListener("input", filterField);
-
-document.getElementById("enable-perms").addEventListener("click", () => {
-  browser.permissions.request(required);
-  window.close();
-});
-
-for (let element of ["easter_eggs", "stars", "nickname", "pin_notify", "sort_method", "poll_time"]) {
-  document.getElementById(element).addEventListener("input", settings_changed);
-}
+const version = "1.8";
+const checkbox_settings = ["easter_eggs", "stars", "nickname", "pin_notify", "show_daily", "badges", "daily_notifications"];
+const value_settings = ["sort_method", "poll_time"];
 
 const friends_list = document.getElementById("friend-list");
 const no_friends = document.getElementById("no-friends");
@@ -24,6 +17,24 @@ const main_spinner = document.getElementById("main-spinner");
 const searching_friend = document.getElementById("searching-friend");
 const add_friend_bar = document.getElementById("add-friend");
 const settings_panel = document.getElementById("settings");
+const footer = document.getElementById("footer");
+
+const defaults = {
+  "easter_eggs": true,
+  "stars": false,
+  "nickname": true,
+  "pin_notify": true,
+  "sort_method": "submitted",
+  "poll_time": "30000",
+  "show_daily": true,
+  "badges": true,
+  "daily_notifications": false
+}
+
+const required = {
+  origins: ["https://leetcode.com/graphql"]
+};
+
 const emojis = {
   "10": "🔟",
   "69": "😏",
@@ -39,37 +50,58 @@ const emojis = {
   "1337": "💻"
 }
 
-let required = {
-  origins: ["https://leetcode.com/graphql"]
-};
-
+let isSignedIn = false;
 let friends = [];
 let aliases = {};
 let watching = [];
 let settings = {};
+let last_version = "1.0";
 
+document.getElementById("add-button").addEventListener("click", () => add_friend());
+document.getElementById("enter-settings").addEventListener("click", () => toggle_settings());
+document.getElementById("exit-settings").addEventListener("click", () => toggle_settings());
+document.getElementById("user-input").addEventListener("input", filterField);
+
+document.getElementById("enable-perms").addEventListener("click", () => {
+  browser.permissions.request(required);
+  window.close();
+});
+
+for (let element of checkbox_settings.concat(value_settings)) {
+  document.getElementById(element).addEventListener("input", settings_changed);
+}
+
+browser.storage.sync.get("version").then(res => {
+  last_version = res.version ?? "1.0";
+  if (last_version != version) {
+      browser.storage.sync.set({
+        "version": version
+      });
+  }
+}).then(
 browser.storage.sync.get("settings").then(res => {
   settings = res.settings || {};
 
-  let defaults = {
-    "easter_eggs": true,
-    "stars": true,
-    "nickname": false,
-    "pin_notify": true,
-    "sort_method": "submitted",
-    "poll_time": "30000"
-  }
   Object.entries(defaults).forEach(([key, val]) => {
     settings[key] = settings[key] ?? val;
+
+    if (last_version == "1.0") {
+      // This can be used to reset settings to default for given versions
+      settings[key] = val;
+    }
   });
 
-  for (let element of ["easter_eggs", "stars", "nickname", "pin_notify"]) {
+  for (let element of checkbox_settings) {
     document.getElementById(element).checked = settings[element];
   }
 
-  document.getElementById("sort_method").value = settings["sort_method"];
-  document.getElementById("poll_time").value = settings["poll_time"];
-});
+  for (let element of value_settings) {
+    document.getElementById(element).value = settings[element];
+  }
+
+  whoami();
+  daily();
+}));
 
 // Check permissions and load data from storage
 browser.permissions.contains(required).then(has_perms => {
@@ -94,11 +126,54 @@ browser.permissions.contains(required).then(has_perms => {
 
     }));
   } else {
-    document.getElementById("footer").classList.add("hidden");
+    footer.classList.add("hidden");
     document.getElementById("enter-settings").classList.add("hidden");
     document.getElementById("perms").classList.remove("hidden");
   }
 });
+
+async function whoami() {
+  let url = `https://leetcode.com/graphql/?query=query {
+    userStatus {
+        username
+        isSignedIn
+    }
+  }`;
+  browser.runtime.sendMessage(url, data => {
+    if (data["userStatus"]["isSignedIn"] == true) {
+      isSignedIn = true
+      document.getElementById("signed-in-name").innerText = data["userStatus"]["username"];
+
+      if (settings["show_daily"]) {
+        document.getElementById("daily-link").classList.remove("hidden");
+      }
+    }
+  });
+}
+
+async function daily() {
+  let url = `https://leetcode.com/graphql/?query=query {
+    activeDailyCodingChallengeQuestion {
+        date
+        userStatus
+        link
+        question {
+            questionFrontendId
+            challengeQuestion {
+                incompleteChallengeCount
+                streakCount
+            }
+        }
+    }
+}`;
+  browser.runtime.sendMessage(url, data => {
+    let question = data["activeDailyCodingChallengeQuestion"];
+    if (question["userStatus"] == "Finish") {
+      document.getElementById("daily-image").src = "../images/daily_complete.png";
+    }
+    document.getElementById("daily-link").href = "https://leetcode.com" + escape(question["link"]);
+  });
+}
 
 // Retrieves a user's profile information
 async function get_user(username, callback = data => received_user(data)) {
@@ -126,6 +201,13 @@ async function get_user(username, callback = data => received_user(data)) {
               submissions
           }
       }
+      badges {
+          id
+          icon
+      }
+      activeBadge {
+          id
+      }
   }
   recentSubmissionList(username: "${username}", limit: 1) {
       timestamp
@@ -140,11 +222,13 @@ function toggle_settings() {
     no_friends.classList.add("hidden");
     friends_list.classList.add("hidden");
     main_spinner.classList.add("hidden");
+    footer.classList.add("hidden");
     return;
   }
 
   settings_panel.classList.add("hidden");
   friends_list.classList.remove("hidden");
+  footer.classList.remove("hidden");
   if (friends.length == 0) {
     no_friends.classList.remove("hidden");
   }
@@ -161,47 +245,57 @@ function settings_changed(e) {
     "settings": settings
   });
 
-  if (e.target.id == "stars") {
-    for (let element of document.getElementsByClassName("stars")) {
+  switch (e.target.id) {
+    case "stars":
+      let stars_list = document.getElementsByClassName("stars");
       if (settings["stars"]) {
-        element.classList.remove("hidden");
+        [].forEach.call(stars_list, e => e.classList.remove("hidden"));
       } else {
-        element.classList.add("hidden");
+        [].forEach.call(stars_list, e => e.classList.add("hidden"));
       }
-    }
-  } else if (e.target.id == "easter_eggs") {
-    for (let element of document.getElementsByClassName("emoji-all")) {
-      if (settings["easter_eggs"]) {
-        element.classList.remove("hidden");
-      } else {
-        element.classList.add("hidden");
-      }
-    }
+      break;
 
-    for (let element of document.getElementsByClassName("plain-all")) {
+    case "easter_eggs":
+      let emoji_all = document.getElementsByClassName("emoji-all");
+      let plain_all = document.getElementsByClassName("plain-all");
+
       if (settings["easter_eggs"]) {
-        element.classList.add("hidden");
+        [].forEach.call(emoji_all, e => e.classList.remove("hidden"));
+        [].forEach.call(plain_all, e => e.classList.add("hidden"));
       } else {
-        element.classList.remove("hidden");
+        [].forEach.call(emoji_all, e => e.classList.add("hidden"));
+        [].forEach.call(plain_all, e => e.classList.remove("hidden"));
       }
-    }
-  } else if (e.target.id == "nickname") {
-    for (let username of friends) {
+      break;
+
+    case "nickname":
       if (settings["nickname"]) {
-        if (username in aliases) {
-          document.getElementById("headline-" + username).innerText = aliases[username];
-        } else {
-          document.getElementById("headline-" + username).innerText = username;
-        }
+        friends.forEach(username => {
+          document.getElementById("headline-" + username).innerText = (username in aliases) ? aliases[username] : username;
+        });
       } else {
-        if (username in aliases) {
-          document.getElementById("headline-" + username).innerText = aliases[username] + " (" + username + ")";
-        } else {
-          document.getElementById("headline-" + username).innerText = username;
-        }
+        friends.forEach(username => {
+          document.getElementById("headline-" + username).innerText = (username in aliases) ? aliases[username] + " (" + username + ")" : username;
+        });
       }
+      break;
 
-    }
+    case "show_daily":
+      if (settings["show_daily"] && isSignedIn) {
+        document.getElementById("daily-link").classList.remove("hidden");
+      } else {
+        document.getElementById("daily-link").classList.add("hidden");
+      }
+      break;
+
+    case "badges":
+      let badge_list = document.getElementsByClassName("badge-container");
+      if (settings["badges"]) {
+        [].forEach.call(badge_list, e => e.classList.remove("hidden"));
+      } else {
+        [].forEach.call(badge_list, e => e.classList.add("hidden"));
+      }
+      break;
   }
 
   sort_friends();
@@ -440,9 +534,24 @@ function create_friend_box(data) {
     headline = (user in aliases) ? `${aliases[user]}` : user;
   }
 
+  let badge_icon = "";
+  if (data["matchedUser"]["activeBadge"] !== null) {
+    for (let badge of data["matchedUser"]["badges"]) {
+      if (badge["id"] == data["matchedUser"]["activeBadge"]["id"]) {
+        badge_icon = badge["icon"];
+        break;
+      }
+    }
+    if (!badge_icon.startsWith("http")) {
+      badge_icon = "https://leetcode.com" + badge_icon;
+    }
+    badge_icon = escape(badge_icon);
+  }
+
   var div = document.createElement("div");
   // All values have been sanitized
-  div.innerHTML = `<img src="${avatar}" class="avatar" alt="avatar"/>
+  div.innerHTML = `<img src="${avatar}" class="avatar" alt="avatar" />
+    <div class="badge-container ${settings["badges"] ? "" : "hidden"}"><img src="${badge_icon}" class="badge ${badge_icon.length == 0 ? "hidden" : ""}" alt="badge"/></div>
     <div class="east-of-avatar flex" id="eoa-${user}">
       <div class="flex user-row">
         <h3><a target="_blank" href="https://leetcode.com/${user}" id="headline-${user}">${headline}</a></h3>
@@ -482,7 +591,9 @@ function create_friend_box(data) {
     document.getElementById("friend-list").appendChild(div);
 
     div.id = user;
-    div.setAttribute("user", user.toLowerCase()); // used for sorting friends list alphabetically
+
+    // Attributes are used for sorting
+    div.setAttribute("user", user.toLowerCase());
     div.setAttribute("caps_user", user);
     div.setAttribute("rank", rank);
     div.setAttribute("submitted", milliseconds > 0 ? milliseconds : Infinity);

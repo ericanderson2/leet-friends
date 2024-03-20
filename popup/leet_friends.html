@@ -12,10 +12,13 @@
     <div id="header" class="flex">
       <img src="../images/lf_logo.png" alt="leet friends logo"/>
       <h1>LeetFriends</h1>
+      <a id="daily-link" href="#" class="hidden">
+        <img id="daily-image" src="../images/daily_incomplete.png" alt="daily"/>
+      </a>
       <div class="flex-fill">
         <div id="header-info">
           <div id="settings-button" class="flex">
-            <p>v1.7</p>
+            <p>v1.8</p>
             <button id="enter-settings" class="friend-button edit-button">⚙</button>
           </div>
           <p><a target="_blank" href="https://github.com/ericanderson2/leet-friends/blob/main/version_history.md">What's New?</a></p>
@@ -26,6 +29,7 @@
       <div id="friend-list"><!-- blueprint
       <div class="friend-box flex" id="lee">
         <img src="https://assets.leetcode.com/users/lee215/avatar_1551541889.png" class="avatar" alt="avatar"/>
+        <div class="badge-container"><img src="https://assets.leetcode.com/static_assets/public/images/badges/knight.png" class="badge" alt="badge"/></div>
         <div class="east-of-avatar flex">
           <div class="flex user-row">
 
@@ -94,6 +98,14 @@
             <input type="checkbox" id="nickname" />
             <label for="nickname"> Nickname only</label>
           </li>
+          <li>
+            <input type="checkbox" id="badges" />
+            <label for="badges"> Badges</label>
+          </li>
+          <li>
+            <input type="checkbox" id="show_daily" />
+            <label for="show_daily"> Show daily (<span id="signed-in-name">not signed in</span>)</label>
+          </li>
         </ul>
         <h3>Sorting</h3>
         <ul>
@@ -120,6 +132,10 @@
              <option value="120000">2 minutes</option>
              <option value="300000">5 minutes</option>
             </select>
+          </li>
+          <li>
+            <input type="checkbox" id="daily_notifications" />
+            <label for="daily_notifications"> Daily reminders</label>
           </li>
       </div>
       <div class="loader hidden" id="main-spinner"></div>
